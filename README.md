@@ -6,7 +6,7 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-🔥-red)
 
 > 📌 **Paper:** [Harnessing Frequency Spectrum Insights for Image Copyright Protection Against Diffusion Model](https://arxiv.org/abs/your-paper)  
-> 📖 **Conference:** CVPR 2025
+> 📖 **Conference:** <b>CVPR 2025</b> 
 
 <p align="center">
   <img src="images/teaser.png" alt="Teaser Image" width="500">
