@@ -9,7 +9,7 @@
 > 📖 **Conference:** CVPR 2025
 
 <p align="center">
-  <img src="images/teaser.png" alt="Teaser Image" width="400">
+  <img src="images/teaser.png" alt="Teaser Image" width="500">
 </p>
 
 <!-- ## 🔥 Highlights
