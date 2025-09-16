@@ -309,7 +309,7 @@ class BeatGANsUNetModel(nn.Module):
         hs = [[] for _ in range(len(self.conf.channel_mult))]
         emb = self.time_embed(timestep_embedding(t, self.time_emb_channels))
 
-        # For Classifier-Free
+        # NOTE For Classifier-Free training
         if self.conf.num_classes is not None and y is not None:
             assert y.shape == (x.shape[0],)
             label_embs = self.label_emb(y)

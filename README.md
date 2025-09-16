@@ -53,31 +53,27 @@ conda env create -f environment.yml
 
 # 🏋️‍♂️ Training & Evaluation
 
-## Image Watermarking
+## 🖼️ Image Watermarking
 
 - **Watermarking**
-1. **Code Reference**  
-  Refer to the [HiNet](https://github.com/TomTomTommi/HiNet) implementation.
 
-2. **Download Pretrained Model**  
+  **Download Pretrained Model**  
   Download [the pretrained HiNet](https://drive.google.com/drive/folders/1l3XBFYPMaNFdvCWyOHfB2qIPkpjIxZgE?usp=sharing) and put it in ```~/CoprGuard/watermark/ckpt```.
 
-3. **Apply Watermark to Training Images**  
+  **Apply Watermark to Training Images**  
   ```bash
   # For unconditional training images
   python wm.py --root_dir <> --watermark_path <> --save_dir <>
-  # For Text-to-Image training images
-  cd ~/CoprGuard/watermark
-  python wm.py --root_dir <> --watermark_path <> --save_dir <> --t2i
   ```
 
 - **Generate Figure 6**
-1. **Compute Similarity Score**
+
+  **Compute Similarity Score**
   ```bash
   python get_cos.py
   ```
 
-2. **Plot Cosine Similarity Distribution**
+  **Plot Cosine Similarity Distribution**
   ```bash
   python plt.py
   ```

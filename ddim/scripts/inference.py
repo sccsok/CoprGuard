@@ -30,7 +30,7 @@ os.makedirs(output_dir, exist_ok=True)
 # Counter for total saved images
 saved_count = 0
 
-# For Classifier-Free sampling
+# NOTE For Classifier-Free sampling
 # label = torch.tensor([32], device=device)
 
 while saved_count < num_images:
@@ -54,13 +54,13 @@ while saved_count < num_images:
     #                     noise=x_T):
         # final_sample = sample["sample"]
     
-    # Run Classifier-Free sampling loop, only keep the last sample   
+    # NOTE Run Classifier-Free sampling loop, only keep the last sample   
     # for sample in sampler.ddim_sample_loop_progressive(
     #     model=model.ema_model,
     #     noise=x_T,
     #     y=label
     # ):
-    #     final_sample = sample["sample"]
+        # final_sample = sample["sample"]
         
     # Rescale final output from [-1, 1] to [0, 1]
     images = (final_sample + 1) / 2  # Shape: [B, 3, H, W]

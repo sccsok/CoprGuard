@@ -38,6 +38,10 @@ class GaussianDiffusionBeatGansConfig(BaseConfig):
         return GaussianDiffusionBeatGans(self)
 
 
+class Return(NamedTuple):
+    pred: th.Tensor
+    
+    
 class GaussianDiffusionBeatGans:
     """
     Utilities for training and sampling diffusion models.
@@ -130,8 +134,8 @@ class GaussianDiffusionBeatGans:
         ]:
             with autocast(self.conf.fp16):
                 # x_t is static wrt. to the diffusion process
+                # NOTE For Classifier-Free
                 if labels is not None:
-                    # For Classifier-Free
                     model_forward = model.forward(x=x_t.detach(),
                                               t=self._scale_timesteps(t),
                                               x_start=x_start.detach(),
@@ -279,6 +283,7 @@ class GaussianDiffusionBeatGans:
                         t,
                         clip_denoised=True,
                         denoised_fn=None,
+                        y=None,
                         model_kwargs=None):
         """
         Apply the model to get p(x_{t-1} | x_t), as well as a prediction of
@@ -306,10 +311,22 @@ class GaussianDiffusionBeatGans:
         B, C = x.shape[:2]
         assert t.shape == (B, )
         with autocast(self.conf.fp16):
-            model_forward = model.forward(x=x,
+            # NOTE For Classifier-Free training
+            if y is not None:
+                model_forward_cond = model.forward(x=x,
+                                            t=self._scale_timesteps(t),
+                                            y=y,
+                                            **model_kwargs)
+                model_forward_uncond = model.forward(x=x, t=self._scale_timesteps(t), **model_kwargs)
+                # model_output = (1 + self.conf.guidance_scale) * model_forward_cond.pred - self.conf.guidance_scale * model_forward_uncond.pred
+                model_output = (1 + 1.8) * model_forward_cond.pred - 1.8 * model_forward_uncond.pred
+                model_forward = Return(pred=model_output)
+            else:
+                model_forward = model.forward(x=x,
                                           t=self._scale_timesteps(t),
                                           **model_kwargs)
-        model_output = model_forward.pred
+                
+            model_output = model_forward.pred
 
         if self.model_var_type in [
                 ModelVarType.fixed_large, ModelVarType.fixed_small
@@ -591,6 +608,7 @@ class GaussianDiffusionBeatGans:
         clip_denoised=True,
         denoised_fn=None,
         cond_fn=None,
+        y=None,
         model_kwargs=None,
         eta=0.0,
     ):
@@ -605,6 +623,7 @@ class GaussianDiffusionBeatGans:
             t,
             clip_denoised=clip_denoised,
             denoised_fn=denoised_fn,
+            y=y,
             model_kwargs=model_kwargs,
         )
         if cond_fn is not None:
@@ -757,6 +776,7 @@ class GaussianDiffusionBeatGans:
         clip_denoised=True,
         denoised_fn=None,
         cond_fn=None,
+        y=None,
         model_kwargs=None,
         device=None,
         progress=False,
@@ -801,6 +821,7 @@ class GaussianDiffusionBeatGans:
                     clip_denoised=clip_denoised,
                     denoised_fn=denoised_fn,
                     cond_fn=cond_fn,
+                    y=y,
                     model_kwargs=_kwargs,
                     eta=eta,
                 )
