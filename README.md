@@ -57,10 +57,10 @@ conda env create -f environment.yml
 
 - **Watermarking**
 
-  **Download Pretrained Model**  
   Download [the pretrained HiNet](https://drive.google.com/drive/folders/1l3XBFYPMaNFdvCWyOHfB2qIPkpjIxZgE?usp=sharing) and put it in ```~/CoprGuard/watermark/ckpt```.
 
-  **Apply Watermark to Training Images**  
+  Watermarking training images：
+  
   ```bash
   # For unconditional training images
   python wm.py --root_dir <> --watermark_path <> --save_dir <>
@@ -68,12 +68,14 @@ conda env create -f environment.yml
 
 - **Generate Figure 6**
 
-  **Compute Similarity Score**
+  Compute consine similarity scores:
+  
   ```bash
   python get_cos.py
   ```
 
-  **Plot Cosine Similarity Distribution**
+  Plot cosine similarity distribution:
+  
   ```bash
   python plt.py
   ```
@@ -83,24 +85,31 @@ conda env create -f environment.yml
 - **Prepare Dataset**  
   Please prepare the training dataset according to the **Dataset Preparation format**.
 
-- **Train the DDPM Model**  
+- **DDPM Train**
+  
   Run the training scripts under `ddim/scripts`:
+  
   ```bash
   cd ~/CoprGuard/ddim
   python scripts/xxx.py
   ```
 
-- **Image Sampling**   
+- **Image Sampling**
+  
   Use the DDPM or DDIM scheduler for image sampling:
+  
   ```bash
   python ddim/scripts/inference.py
   ```
 
-- **Classifier-Free Training (Optional)**
-  You may modify the DDIM code implementation or refer to the following repository: [classifier-free-diffusion-guidance-Pytorch](https://github.com/jcwang-gh/classifier-free-diffusion-guidance-Pytorch)
+- **Classifier-Free Training**
+  
+  The `ddim` folder can be easily modified to support Classifier-Free Guidance. You can also refer to the following repository: [classifier-free-diffusion-guidance-Pytorch](https://github.com/jcwang-gh/classifier-free-diffusion-guidance-Pytorch)
 
 ## 📊 Generate Figures
+
 - **Generate Figure 1 & Figure 2 & Figure 10**
+  
   ```bash
   cd ~/CoprGuard/frequence
   python frequency_analysis.py ~/CoprGuard/Source $WORKDIR/output <fft_hp/dct/...> --img-dirs <FFHQ BIgGAN ProGAN ImageNet> --log --vmin 1e-5 --vmax 1e-1
@@ -108,18 +117,21 @@ conda env create -f environment.yml
   ```
 
 - **Generate Table 1**
+  
   ```bash
   cd ~/CoprGuard/frequence
   python get_cos.py --type <fft/dct/...> --models1 <[FFHQ, xxx, ...]> --models2 <[FFHQ_DDIM, xxx, ...]> 
   ```
 
 - **Generate Figure 3**
+  
   ```bash
   cd ~/CoprGuard/frequence
   get_rapsd.ipynb
   ```
 
 - **Generate Table 3**
+  
   ```bash
   cd ~/CoprGuard/watermark
   python similarity_compute.py --mode folder --folder <> --watermark <> --resize 128 128
